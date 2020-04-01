@@ -9,8 +9,7 @@ interface ListItemManagePropsI {
   isFirst: boolean;
   isLast: boolean;
   handleRemoveItem: (item: ListItemBaseI) => void;
-  handleMoveItemUp: (item: ListItemBaseI) => void;
-  handleMoveItemDown: (item: ListItemBaseI) => void;
+  handleMoveItem: (position: 1 | -1) => (item: ListItemBaseI) => void;
 }
 
 const ListItem: FC<ListItemBaseI & ListItemManagePropsI> = ({
@@ -18,8 +17,7 @@ const ListItem: FC<ListItemBaseI & ListItemManagePropsI> = ({
   isFirst,
   isLast,
   handleRemoveItem,
-  handleMoveItemUp,
-  handleMoveItemDown
+  handleMoveItem
 }) => {
   const [showSublist, setShowSublist] = useState(false);
 
@@ -32,12 +30,13 @@ const ListItem: FC<ListItemBaseI & ListItemManagePropsI> = ({
   }, [title]);
 
   const handleMoveUp = useCallback(() => {
-    handleMoveItemUp({ title });
+    handleMoveItem(-1)({ title });
   }, [title]);
 
   const handleMoveDown = useCallback(() => {
-    handleMoveItemDown({ title });
+    handleMoveItem(1)({ title });
   }, [title]);
+
   return (
     <li>
       <span>{title}</span>

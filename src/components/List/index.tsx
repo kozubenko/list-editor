@@ -25,21 +25,18 @@ const List: FC = () => {
     setItems(items => items.filter(item => item.title !== newItem.title));
   }, []);
 
-  const handleMoveItemUp = useCallback((swapItem: ListItemBaseI) => {
-    setItems(items => {
-      const itemIndex = items.findIndex(item => item.title === swapItem.title);
+  const handleMoveItem = useCallback(
+    (position: 1 | -1) => (swapItem: ListItemBaseI) => {
+      setItems(items => {
+        const itemIndex = items.findIndex(
+          item => item.title === swapItem.title
+        );
 
-      return swapItemsInArray(items, itemIndex, itemIndex - 1);
-    });
-  }, []);
-
-  const handleMoveItemDown = useCallback((swapItem: ListItemBaseI) => {
-    setItems(items => {
-      const itemIndex = items.findIndex(item => item.title === swapItem.title);
-
-      return swapItemsInArray<ListItemBaseI>(items, itemIndex, itemIndex + 1);
-    });
-  }, []);
+        return swapItemsInArray(items, itemIndex, itemIndex + position);
+      });
+    },
+    []
+  );
 
   return (
     <ul>
@@ -54,8 +51,7 @@ const List: FC = () => {
             isFirst={isFirst}
             isLast={isLast}
             handleRemoveItem={handleRemoveItem}
-            handleMoveItemUp={handleMoveItemUp}
-            handleMoveItemDown={handleMoveItemDown}
+            handleMoveItem={handleMoveItem}
           />
         );
       })}
