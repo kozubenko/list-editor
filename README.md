@@ -1,5 +1,7 @@
 ## Available Scripts
 
+[Homepage](http://kozubenko.github.io/list-editor)
+
 [Task description](https://gist.github.com/SirNicholas/b85e7a3de3e48789eaa07cfd177a5f62)
 
 In the project directory, you can run:
