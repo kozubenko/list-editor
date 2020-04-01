@@ -1,4 +1,5 @@
 import React, { FC, useState, useCallback } from "react";
+
 import ListItem, { ListItemI } from "../ListItem";
 import AddItemForm from "../AddItemForm";
 
@@ -21,6 +22,38 @@ const List: FC = () => {
     setItems(items => items.filter(item => item.title !== newItem.title));
   }, []);
 
+  const moveItemUp = useCallback((swapItem: ListItemI) => {
+    setItems(items => {
+      const newArray = [...items];
+
+      const itemIndex = newArray.findIndex(
+        item => item.title === swapItem.title
+      );
+
+      [newArray[itemIndex], newArray[itemIndex - 1]] = [
+        newArray[itemIndex - 1],
+        newArray[itemIndex]
+      ];
+      return newArray;
+    });
+  }, []);
+
+  const moveItemDown = useCallback((swapItem: ListItemI) => {
+    setItems(items => {
+      const newArray = [...items];
+
+      const itemIndex = newArray.findIndex(
+        item => item.title === swapItem.title
+      );
+
+      [newArray[itemIndex + 1], newArray[itemIndex]] = [
+        newArray[itemIndex],
+        newArray[itemIndex + 1]
+      ];
+      return newArray;
+    });
+  }, []);
+
   return (
     <ul>
       {items.map((item, idx) => {
@@ -34,6 +67,8 @@ const List: FC = () => {
             isFirst={isFirst}
             isLast={isLast}
             handleRemoveItem={handleRemoveItem}
+            moveItemUp={moveItemUp}
+            moveItemDown={moveItemDown}
           />
         );
       })}
