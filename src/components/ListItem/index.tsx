@@ -29,15 +29,15 @@ const ListItem: FC<ListItemBaseI & ListItemManagePropsI> = ({
 
   const handleRemove = useCallback(() => {
     handleRemoveItem({ title });
-  }, []);
+  }, [title]);
 
   const handleMoveUp = useCallback(() => {
     handleMoveItemUp({ title });
-  }, []);
+  }, [title]);
 
   const handleMoveDown = useCallback(() => {
     handleMoveItemDown({ title });
-  }, []);
+  }, [title]);
   return (
     <li>
       <span>{title}</span>

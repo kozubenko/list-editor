@@ -18,7 +18,7 @@ const List: FC = () => {
   const isItemExist = useCallback(
     (newItem: ListItemBaseI) =>
       items.some(item => item.title === newItem.title),
-    [items]
+    []
   );
 
   const handleRemoveItem = useCallback((newItem: ListItemBaseI) => {
@@ -36,6 +36,7 @@ const List: FC = () => {
   const handleMoveItemDown = useCallback((swapItem: ListItemBaseI) => {
     setItems(items => {
       const itemIndex = items.findIndex(item => item.title === swapItem.title);
+
       return swapItemsInArray<ListItemBaseI>(items, itemIndex, itemIndex + 1);
     });
   }, []);
