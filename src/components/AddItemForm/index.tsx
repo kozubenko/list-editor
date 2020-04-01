@@ -3,26 +3,39 @@ import { ListItemI } from "../ListItem";
 
 interface AddItemFormI {
   handleAddItem: (item: ListItemI) => void;
+  isItemExist: (item: ListItemI) => boolean;
 }
 
-const AddItemForm: FC<AddItemFormI> = ({ handleAddItem }) => {
-  const [value, setValue] = useState<string>("");
+const AddItemForm: FC<AddItemFormI> = ({ handleAddItem, isItemExist }) => {
+  const [title, setValue] = useState<string>("");
+  const showErrorMessage = useCallback(() => {
+    alert(
+      "We are sorry. Item with same title already exist. Try another please."
+    );
+  }, []);
+
   const handleSubmit = useCallback(
     e => {
       e.preventDefault();
-      handleAddItem({ title: value });
+
+      if (isItemExist({ title })) {
+        showErrorMessage();
+      } else {
+        handleAddItem({ title });
+      }
+      setValue("");
     },
-    [value]
+    [title, isItemExist]
   );
 
-  const handleChangeValue = useCallback(({ target: { value } }) => {
-    setValue(value);
+  const handleChangeValue = useCallback(({ target: { value: title } }) => {
+    setValue(title);
   }, []);
 
   return (
     <form onSubmit={handleSubmit}>
-      <input onChange={handleChangeValue} />
-      <button type="submit" disabled={!value}>
+      <input value={title} onChange={handleChangeValue} />
+      <button type="submit" disabled={!title}>
         Add
       </button>
     </form>
