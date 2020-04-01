@@ -1,25 +1,25 @@
 import React, { FC, useState, useCallback } from "react";
 import List from "../List";
 
-export interface ListItemI {
+export interface ListItemBaseI {
   title: string;
 }
 
 interface ListItemManagePropsI {
   isFirst: boolean;
   isLast: boolean;
-  handleRemoveItem: (item: ListItemI) => void;
-  moveItemUp: (item: ListItemI) => void;
-  moveItemDown: (item: ListItemI) => void;
+  handleRemoveItem: (item: ListItemBaseI) => void;
+  handleMoveItemUp: (item: ListItemBaseI) => void;
+  handleMoveItemDown: (item: ListItemBaseI) => void;
 }
 
-const ListItem: FC<ListItemI & ListItemManagePropsI> = ({
+const ListItem: FC<ListItemBaseI & ListItemManagePropsI> = ({
   title,
   isFirst,
   isLast,
   handleRemoveItem,
-  moveItemUp,
-  moveItemDown
+  handleMoveItemUp,
+  handleMoveItemDown
 }) => {
   const [showSublist, setShowSublist] = useState(false);
 
@@ -32,11 +32,11 @@ const ListItem: FC<ListItemI & ListItemManagePropsI> = ({
   }, []);
 
   const handleMoveUp = useCallback(() => {
-    moveItemUp({ title });
+    handleMoveItemUp({ title });
   }, []);
 
   const handleMoveDown = useCallback(() => {
-    moveItemDown({ title });
+    handleMoveItemDown({ title });
   }, []);
   return (
     <li>

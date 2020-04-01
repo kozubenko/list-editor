@@ -1,12 +1,12 @@
 import React, { FC, useCallback, useState } from "react";
-import { ListItemI } from "../ListItem";
+import { ListItemBaseI } from "../ListItem";
 
-interface AddItemFormI {
-  handleAddItem: (item: ListItemI) => void;
-  isItemExist: (item: ListItemI) => boolean;
+interface ListItemFormI {
+  handleAddItem: (item: ListItemBaseI) => void;
+  isItemExist: (item: ListItemBaseI) => boolean;
 }
 
-const AddItemForm: FC<AddItemFormI> = ({ handleAddItem, isItemExist }) => {
+const ListItemForm: FC<ListItemFormI> = ({ handleAddItem, isItemExist }) => {
   const [title, setValue] = useState<string>("");
   const showErrorMessage = useCallback(() => {
     alert(
@@ -42,4 +42,4 @@ const AddItemForm: FC<AddItemFormI> = ({ handleAddItem, isItemExist }) => {
   );
 };
 
-export default AddItemForm;
+export default ListItemForm;

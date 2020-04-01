@@ -1,56 +1,42 @@
 import React, { FC, useState, useCallback } from "react";
 
-import ListItem, { ListItemI } from "../ListItem";
-import AddItemForm from "../AddItemForm";
+import ListItem, { ListItemBaseI } from "../ListItem";
+import ListItemForm from "../ListItemForm";
+
+import { swapItemsInArray } from "../../utils/helpers";
 
 const List: FC = () => {
-  const [items, setItems] = useState<Array<ListItemI>>([]);
+  const [items, setItems] = useState<Array<ListItemBaseI>>([]);
 
   const handleAddItem = useCallback(
-    (newItem: ListItemI) => {
+    (newItem: ListItemBaseI) => {
       setItems(items => [...items, newItem]);
     },
     [items]
   );
 
   const isItemExist = useCallback(
-    (newItem: ListItemI) => items.some(item => item.title === newItem.title),
+    (newItem: ListItemBaseI) =>
+      items.some(item => item.title === newItem.title),
     [items]
   );
 
-  const handleRemoveItem = useCallback((newItem: ListItemI) => {
+  const handleRemoveItem = useCallback((newItem: ListItemBaseI) => {
     setItems(items => items.filter(item => item.title !== newItem.title));
   }, []);
 
-  const moveItemUp = useCallback((swapItem: ListItemI) => {
+  const handleMoveItemUp = useCallback((swapItem: ListItemBaseI) => {
     setItems(items => {
-      const newArray = [...items];
+      const itemIndex = items.findIndex(item => item.title === swapItem.title);
 
-      const itemIndex = newArray.findIndex(
-        item => item.title === swapItem.title
-      );
-
-      [newArray[itemIndex], newArray[itemIndex - 1]] = [
-        newArray[itemIndex - 1],
-        newArray[itemIndex]
-      ];
-      return newArray;
+      return swapItemsInArray(items, itemIndex, itemIndex - 1);
     });
   }, []);
 
-  const moveItemDown = useCallback((swapItem: ListItemI) => {
+  const handleMoveItemDown = useCallback((swapItem: ListItemBaseI) => {
     setItems(items => {
-      const newArray = [...items];
-
-      const itemIndex = newArray.findIndex(
-        item => item.title === swapItem.title
-      );
-
-      [newArray[itemIndex + 1], newArray[itemIndex]] = [
-        newArray[itemIndex],
-        newArray[itemIndex + 1]
-      ];
-      return newArray;
+      const itemIndex = items.findIndex(item => item.title === swapItem.title);
+      return swapItemsInArray<ListItemBaseI>(items, itemIndex, itemIndex + 1);
     });
   }, []);
 
@@ -67,13 +53,13 @@ const List: FC = () => {
             isFirst={isFirst}
             isLast={isLast}
             handleRemoveItem={handleRemoveItem}
-            moveItemUp={moveItemUp}
-            moveItemDown={moveItemDown}
+            handleMoveItemUp={handleMoveItemUp}
+            handleMoveItemDown={handleMoveItemDown}
           />
         );
       })}
       <li>
-        <AddItemForm handleAddItem={handleAddItem} isItemExist={isItemExist} />
+        <ListItemForm handleAddItem={handleAddItem} isItemExist={isItemExist} />
       </li>
     </ul>
   );
